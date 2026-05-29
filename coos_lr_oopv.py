@@ -803,12 +803,9 @@ def seed_database():
     ])
     db.session.commit()
 
+with app.app_context():
+    db.create_all()
+    seed_database()
+
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()   
-        seed_database()   
-        
-    print("\n" + "="*60)
-    print("  COOS-LR OOP Edition  —  SQLAlchemy ORM Refactored")
-    print("="*60 + "\n")
     app.run(host='0.0.0.0', debug=True)
