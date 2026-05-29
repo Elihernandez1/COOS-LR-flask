@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% set hide_navbar = true %}
+{% block title %}Menu Management{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  {% include "staff_sidebar.html" %}
+  <div class="content">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h2 style="font-size:22px;font-weight:700">Menu Management</h2>
+      <a href="/staff/menu/add" class="btn btn-o">+ Add Item</a>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Badge</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for i in items %}
+          <tr>
+            <td style="font-weight:700">{{ i.name }}<br><small style="color:var(--sub);font-weight:400">{{ i.description[:40] }}</small></td>
+            <td style="color:var(--sub)">{{ i.category }}</td>
+            <td style="color:var(--orange);font-weight:700">${{ "%.2f"|format(i.price) }}</td>
+            <td>{% if i.badge %}<span class='bdg bdg-{{ i.badge }}'>{{ i.badge }}</span>{% endif %}</td>
+            <td>
+              {% if i.is_available %}
+              <span class="bdg" style="background:var(--teal);color:#fff">Available</span>
+              {% else %}
+              <span class="bdg" style="background:#dc3545;color:#fff">Sold Out</span>
+              {% endif %}
+            </td>
+            <td>
+              <div style="display:flex;gap:6px;flex-wrap:wrap">
+                <a href="/staff/menu/edit/{{ i.item_id }}" class="btn btn-sm btn-s">Edit</a>
+                <form method="POST" action="/staff/menu/toggle/{{ i.item_id }}" style="display:inline">
+                  <button class="btn btn-sm {% if i.is_available %}btn-d{% else %}btn-t{% endif %}">
+                    {% if i.is_available %}Sold Out{% else %}Available{% endif %}
+                  </button>
+                </form>
+                <form method="POST" action="/staff/menu/delete/{{ i.item_id }}" style="display:inline" onsubmit="return confirm('Delete {{ i.name }}?')">
+                  <button class="btn btn-sm btn-d">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

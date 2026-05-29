@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}List Your Restaurant{% endblock %}
+
+{% block content %}
+<div class="page" style="max-width:640px">
+  <div style="text-align:center;padding:40px 0 28px">
+    <div style="font-size:48px;margin-bottom:12px">🍽️</div>
+    <h1 style="font-size:28px;font-weight:700;color:var(--navy);margin-bottom:8px">List Your Restaurant on COOS-LR</h1>
+    <p style="color:var(--sub);font-size:15px;max-width:480px;margin:0 auto">Get your own online ordering page, custom branding, and real-time order management.</p>
+  </div>
+  <div class="card">
+    <div class="card-hdr">Tell Us About Your Business</div>
+    <form method="POST">
+      <div class="grid2">
+        <div class="fg"><label class="lbl">Business Name *</label><input type="text" name="biz_name" class="inp" required placeholder="Luigi's Pizzeria"/></div>
+        <div class="fg"><label class="lbl">Owner / Contact Name *</label><input type="text" name="owner_name" class="inp" required placeholder="Luigi Hernandez"/></div>
+      </div>
+      <div class="grid2">
+        <div class="fg"><label class="lbl">Email Address *</label><input type="email" name="email" class="inp" required placeholder="owner@restaurant.com"/></div>
+        <div class="fg"><label class="lbl">Phone Number *</label><input type="tel" name="phone" class="inp" required placeholder="(212) 555-0149"/></div>
+      </div>
+      <div class="fg"><label class="lbl">Business Address *</label><input type="text" name="address" class="inp" required placeholder="88 Broadway Ave, New York, NY"/></div>
+      <div class="fg"><label class="lbl">Requested Subdomain *</label>
+        <div style="display:flex;align-items:stretch">
+          <input type="text" name="subdomain" class="inp" required placeholder="pizzeria-luigi" style="border-radius:7px 0 0 7px;border-right:none" oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9-]/g,'')"/>
+          <span style="background:#f0f2f5;border:1.5px solid var(--border);border-left:none;padding:10px 14px;font-size:13px;color:var(--sub);border-radius:0 7px 7px 0;white-space:nowrap;display:flex;align-items:center">.coos-lr.com</span>
+        </div>
+      </div>
+      <div class="fg"><label class="lbl">About Your Business <span style="font-weight:400;color:var(--sub)">(optional)</span></label>
+        <textarea name="description" class="inp" rows="3" placeholder="Type of cuisine, years in business…"></textarea></div>
+      <button type="submit" class="btn btn-o btn-w">Submit Application →</button>
+    </form>
+  </div>
+  <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--sub)">
+    Already have an account? <a href="/login">Sign in here</a> &nbsp;|&nbsp; <a href="/" style="color:var(--sub)">← Back to home</a>
+  </p>
+</div>
+{% endblock %}

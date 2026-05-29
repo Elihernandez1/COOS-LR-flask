@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Application Received{% endblock %}
+
+{% block content %}
+<div style="min-height:70vh;display:flex;align-items:center;justify-content:center;padding:40px 16px">
+  <div style="text-align:center;max-width:500px">
+    <div style="font-size:64px;margin-bottom:16px">&#10003;</div>
+    <h2 style="font-size:26px;font-weight:700;color:var(--teal);margin-bottom:10px">Application Received!</h2>
+    <p style="color:var(--sub);font-size:15px;margin-bottom:28px">{{ message|safe }}</p>
+    <a href="/" class="btn btn-o" style="padding:12px 32px">Back to Home &#8594;</a>
+  </div>
+</div>
+{% endblock %}

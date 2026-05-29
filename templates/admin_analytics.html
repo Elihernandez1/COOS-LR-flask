@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Platform Analytics{% endblock %}
+
+{% block content %}
+<div class="page">
+  <h2 style="font-size:22px;font-weight:700;margin-bottom:6px">Platform Analytics</h2>
+  <p style="color:var(--sub);font-size:13px;margin-bottom:22px">Aggregated stats across all restaurants.</p>
+  
+  <div class="stats" style="grid-template-columns:repeat(2,1fr);margin-bottom:28px">
+    <div class="stat"><div class="stat-n">{{ tot_o }}</div><div class="stat-l">Total Orders (All Tenants)</div></div>
+    <div class="stat" style="border-left-color:var(--teal)"><div class="stat-n" style="color:var(--teal)">${{ "%.2f"|format(tot_r) }}</div><div class="stat-l">Total Revenue (Completed)</div></div>
+  </div>
+  
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="padding:14px 20px;background:var(--navy)"><span style="font-size:15px;font-weight:700;color:#fff">Per-Tenant Breakdown</span></div>
+    <table class="tbl">
+      <thead><tr><th>Restaurant</th><th>Subdomain</th><th>Orders</th><th>Revenue</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for r in per %}
+        <tr>
+          <td style="font-weight:700">{{ r.name }}</td>
+          <td style="font-family:monospace;color:var(--sub);font-size:13px">{{ r.sub }}.coos-lr.com</td>
+          <td style="font-weight:700">{{ r.orders }}</td>
+          <td style="color:var(--orange);font-weight:700">${{ "%.2f"|format(r.rev) }}</td>
+          <td><span class="bdg bdg-{% if r.active %}Active{% else %}Inactive{% endif %}">{% if r.active %}Active{% else %}Inactive{% endif %}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

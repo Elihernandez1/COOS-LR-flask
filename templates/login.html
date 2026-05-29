@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div style="min-height:80vh;display:flex;align-items:center;justify-content:center;padding:40px 16px">
+  <div style="width:100%;max-width:460px">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="display:inline-flex;width:64px;height:64px;border-radius:50%;background:var(--orange);
+                  color:#fff;font-size:24px;font-weight:700;align-items:center;justify-content:center;margin-bottom:14px">LR</div>
+      <h1 style="font-size:26px;font-weight:700;color:var(--navy)">COOS-LR</h1>
+      <p style="color:var(--sub);font-size:14px">Sign in to your account</p>
+    </div>
+    
+    <div style="display:flex;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px">
+      <button onclick="switchTab('customer')" id="tab-customer"
+        style="flex:1;padding:11px;font-size:13px;font-weight:700;border:none;cursor:pointer;background:var(--orange);color:#fff">
+        &#128717; Customer
+      </button>
+      <button onclick="switchTab('staff')" id="tab-staff"
+        style="flex:1;padding:11px;font-size:13px;font-weight:700;border:none;cursor:pointer;background:#f0f2f5;color:var(--sub)">
+        &#128104;&#8205;&#127859; Staff / Admin
+      </button>
+    </div>
+    
+    <div class="card">
+      <form method="POST" action="/login">
+        <div class="fg">
+          <label class="lbl">Email Address</label>
+          <input type="email" name="email" class="inp" placeholder="you@email.com" required autofocus/>
+        </div>
+        <div class="fg">
+          <label class="lbl">Password</label>
+          <input type="password" name="password" class="inp" placeholder="••••••••" required/>
+        </div>
+        <button type="submit" class="btn btn-o btn-w" style="margin-top:6px">Sign In →</button>
+      </form>
+      
+      <div id="panel-customer" style="margin-top:16px;padding:14px;background:#f0faf8;border-radius:8px;text-align:center">
+        <p style="font-size:13px;color:var(--sub);margin-bottom:10px">New customer? Create a free account to track your orders.</p>
+        <a href="/signup" class="btn btn-t" style="font-size:13px;padding:8px 20px">Create Customer Account →</a>
+      </div>
+      
+      <div id="panel-staff" style="display:none;margin-top:16px;padding:14px;background:#f8f9fb;border-radius:8px;font-size:12px;color:var(--sub);line-height:1.8">
+        <strong>Demo credentials</strong><br>
+        Staff (Luigi&#39;s): staff@luigi.com / demo123<br>
+        Staff (Sakura): staff@sakura.com / demo123<br>
+        Staff (Brew &amp; Bean): staff@brewbean.com / demo123<br>
+        Admin: admin@coos-lr.com / demo123
+      </div>
+    </div>
+    
+    <div style="text-align:center;margin-top:18px;font-size:13px;display:flex;justify-content:center;gap:20px;flex-wrap:wrap">
+      <a href="/" style="color:var(--sub)">← Back to restaurants</a>
+      <a href="/apply/restaurant" style="color:var(--sub)">List your restaurant</a>
+      <a href="/apply/freelancer" style="color:var(--sub)">Become a freelancer</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(tab){
+  var c = tab === 'customer';
+  document.getElementById('tab-customer').style.background = c ? 'var(--orange)' : '#f0f2f5';
+  document.getElementById('tab-customer').style.color = c ? '#fff' : 'var(--sub)';
+  document.getElementById('tab-staff').style.background = c ? '#f0f2f5' : 'var(--navy)';
+  document.getElementById('tab-staff').style.color = c ? 'var(--sub)' : '#fff';
+  document.getElementById('panel-customer').style.display = c ? 'block' : 'none';
+  document.getElementById('panel-staff').style.display = c ? 'none' : 'block';
+}
+</script>
+{% endblock %}

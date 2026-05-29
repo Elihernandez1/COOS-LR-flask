@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% set hide_navbar = true %}
+{% block title %}Order History{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  {% include "staff_sidebar.html" %}
+  <div class="content">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+      <h2 style="font-size:22px;font-weight:700">Order History</h2>
+      <div>
+        <a href="?f=all" class="btn btn-sm {% if filter == 'all' %}btn-s{% else %}btn-out{% endif %}">All</a>
+        <a href="?f=today" class="btn btn-sm {% if filter == 'today' %}btn-s{% else %}btn-out{% endif %}">Today</a>
+        <a href="?f=week" class="btn btn-sm {% if filter == 'week' %}btn-s{% else %}btn-out{% endif %}">This Week</a>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="tbl">
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody>
+          {% for o in orders %}
+          <tr>
+            <td style="font-weight:700">#{{ o.order_id }}</td>
+            <td>{{ o.customer_name }}</td>
+            <td style="color:var(--orange);font-weight:700">${{ "%.2f"|format(o.total_amount) }}</td>
+            <td>{{ badge(o.status)|safe }}</td>
+            <td style="color:var(--sub);font-size:13px">{{ o.created_at.strftime('%y-%m-%d %H:%M') }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan='5' style='text-align:center;color:var(--sub);padding:32px'>No completed orders yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

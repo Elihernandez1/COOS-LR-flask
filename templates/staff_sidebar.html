@@ -1,0 +1,13 @@
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-name">{{ tenant.name }}</div>
+    <div class="sb-role">Staff Portal</div>
+  </div>
+  <nav class="sb-nav">
+    <a href="/staff" class="{% if request.endpoint == 'staff_dashboard' %}on{% endif %}">📋 Active Orders {% if counts and counts.get('Received') %}<span class="sb-cnt">{{ counts.Received }}</span>{% endif %}</a>
+    <a href="/staff/history" class="{% if request.endpoint == 'order_history' %}on{% endif %}">🕐 Order History</a>
+    <a href="/staff/menu" class="{% if 'menu' in request.endpoint %}on{% endif %}">🍕 Menu Items</a>
+    <a href="/staff/analytics" class="{% if request.endpoint == 'staff_analytics' %}on{% endif %}">📊 Analytics</a>
+  </nav>
+  <div class="sb-foot"><a href="/logout">← Log Out</a></div>
+</aside>

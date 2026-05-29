@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Create Account{% endblock %}
+
+{% block content %}
+<div style="min-height:80vh;display:flex;align-items:center;justify-content:center;padding:40px 16px">
+  <div style="width:100%;max-width:440px">
+    <div style="text-align:center;margin-bottom:24px">
+      <h1 style="font-size:24px;font-weight:700;color:var(--navy)">Create Your Account</h1>
+      <p style="color:var(--sub);font-size:14px;margin-top:4px">Free account — track your orders across all restaurants</p>
+    </div>
+    <div class="card">
+      <form method="POST">
+        <div class="fg"><label class="lbl">Full Name *</label><input type="text" name="full_name" class="inp" placeholder="Maria Rodriguez" required autofocus/></div>
+        <div class="fg"><label class="lbl">Email Address *</label><input type="email" name="email" class="inp" placeholder="maria@email.com" required/></div>
+        <div class="fg"><label class="lbl">Password *</label><input type="password" name="password" class="inp" placeholder="Min. 6 characters" required minlength="6"/></div>
+        <div class="fg"><label class="lbl">Confirm Password *</label><input type="password" name="password2" class="inp" placeholder="Repeat your password" required/></div>
+        <button type="submit" class="btn btn-o btn-w">Create Account →</button>
+      </form>
+    </div>
+    <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--sub)">Already have an account? <a href="/login">Sign in here</a></p>
+  </div>
+</div>
+<script>
+document.querySelector('form').addEventListener('submit',function(e){
+  if(this.querySelector('[name=password]').value!==this.querySelector('[name=password2]').value){
+    e.preventDefault();alert('Passwords do not match.');
+  }
+});
+</script>
+{% endblock %}

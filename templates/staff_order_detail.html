@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% set hide_navbar = true %}
+{% block title %}Order #{{ order.order_id }}{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  {% include "staff_sidebar.html" %}
+  <div class="content">
+    <a href="/staff" style="font-size:13px;color:var(--sub)">← Back to Active Orders</a>
+    <div style="display:flex;align-items:center;gap:14px;margin:16px 0">
+      <h2 style="font-size:22px;font-weight:700">Order #{{ order.order_id }}</h2>{{ badge(order.status)|safe }}
+    </div>
+    <div class="card" style="max-width:700px">
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px"><span style="font-weight:700;color:var(--sub)">Customer</span><span>{{ order.customer_name }}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px"><span style="font-weight:700;color:var(--sub)">Phone</span><span>{{ order.customer_phone }}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px"><span style="font-weight:700;color:var(--sub)">Address</span><span>{{ order.delivery_address }}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px"><span style="font-weight:700;color:var(--sub)">Notes</span><span>{{ order.special_notes or "—" }}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px"><span style="font-weight:700;color:var(--sub)">Payment</span><span>{{ order.payment_method }}</span></div>
+      {% for i in items %}
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px"><span>{{ i.item_name }} × {{ i.quantity }}</span><span>${{ "%.2f"|format(i.subtotal) }}</span></div>
+      {% endfor %}
+      <div style="display:flex;justify-content:space-between;padding:14px 0 0;font-size:19px;font-weight:700">
+        <span>Total</span><span style="color:var(--orange)">${{ "%.2f"|format(order.total_amount) }}</span>
+      </div>
+    </div>
+    {% if order.next_status() %}
+    <form method="POST" action="/staff/order/{{ order.order_id }}/advance" style="margin-top:16px">
+      <button class="btn btn-o btn-w">Advance to "{{ order.next_status() }}" →</button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

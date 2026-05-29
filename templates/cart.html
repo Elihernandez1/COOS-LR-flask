@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% set hide_navbar = true %}
+{% block title %}Cart — {{ tenant.name }}{% endblock %}
+
+{% block content %}
+<nav class="nav" style="background:var(--navy)">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="width:38px;height:38px;border-radius:50%;background:{{ br.primary_color }};color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center">{{ br.logo_text }}</div>
+    <span style="font-size:18px;font-weight:700;color:#fff">{{ tenant.name }}</span>
+  </div>
+  <div class="nav-links">
+    <a href="/order/{{ tenant.subdomain }}" style="color:var(--lsky)">← Menu</a>
+    <a href="/order/{{ tenant.subdomain }}/cart" class="nav-btn" style="background:{{ br.primary_color }}">🛒 Cart ({{ cart|length }})</a>
+  </div>
+</nav>
+<div class="page" style="max-width:700px">
+  <h2 style="font-size:22px;font-weight:700;margin-bottom:6px">🛒 Your Cart</h2>
+  <p style="color:var(--sub);font-size:13px;margin-bottom:22px">{{ tenant.name }}</p>
+  
+  {% if not cart %}
+  <div class='card' style='text-align:center;padding:48px'>
+    <p style='color:var(--sub);margin-bottom:20px'>Your cart is empty.</p>
+    <a href='/order/{{ tenant.subdomain }}' class='btn btn-o'>Browse Menu →</a>
+  </div>
+  {% else %}
+  <div class="card">
+    {% for iid, v in cart.items() %}
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)">
+      <span style="font-weight:700">{{ v.name }}</span>
+      <div style="display:flex;align-items:center;gap:14px">
+        <form method="POST" action="/order/{{ tenant.subdomain }}/cart/update" style="display:flex;align-items:center;gap:6px">
+          <input type="hidden" name="iid" value="{{ iid }}"/>
+          <button name="qty" value="{{ v.qty - 1 }}" class="btn btn-sm btn-out" style="padding:3px 9px">−</button>
+          <span style="font-weight:700;min-width:22px;text-align:center">{{ v.qty }}</span>
+          <button name="qty" value="{{ v.qty + 1 }}" class="btn btn-sm btn-out" style="padding:3px 9px">+</button>
+        </form>
+        <span style="font-weight:700;color:var(--orange);min-width:60px;text-align:right">${{ "%.2f"|format(v.price * v.qty) }}</span>
+        <a href="/order/{{ tenant.subdomain }}/cart/remove/{{ iid }}" style="color:#dc3545;font-size:20px">×</a>
+      </div>
+    </div>
+    {% endfor %}
+    <div style="display:flex;justify-content:space-between;padding:16px 0 0;font-size:20px;font-weight:700">
+      <span>Total</span><span style="color:var(--orange)">${{ "%.2f"|format(total) }}</span>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:20px">
+      <a href="/order/{{ tenant.subdomain }}" class="btn btn-out" style="flex:1;text-align:center">← Keep Shopping</a>
+      <a href="/order/{{ tenant.subdomain }}/checkout" class="btn btn-o" style="flex:1;text-align:center">Checkout →</a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

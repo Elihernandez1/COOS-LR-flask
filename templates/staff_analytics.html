@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% set hide_navbar = true %}
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  {% include "staff_sidebar.html" %}
+  <div class="content">
+    <h2 style="font-size:22px;font-weight:700;margin-bottom:4px">Analytics Dashboard</h2>
+    <p style="color:var(--sub);font-size:13px;margin-bottom:20px">{{ tenant.name }}</p>
+    
+    <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stat"><div class="stat-n">{{ data.total }}</div><div class="stat-l">Total Orders</div></div>
+      <div class="stat" style="border-left-color:var(--teal)"><div class="stat-n" style="color:var(--teal)">${{ "%.2f"|format(data.revenue) }}</div><div class="stat-l">Revenue (Completed)</div></div>
+      <div class="stat" style="border-left-color:var(--steel)"><div class="stat-n" style="color:var(--steel)">${{ "%.2f"|format(avg) }}</div><div class="stat-l">Avg Order Value</div></div>
+    </div>
+    
+    <div class="grid2" style="align-items:start">
+      <div class="card"><div class="card-hdr">🏆 Top-Selling Items</div>
+        <table class="tbl">
+          <thead><tr><th>#</th><th>Item</th><th>Qty</th><th>Revenue</th></tr></thead>
+          <tbody>
+            {% for r in data.top_items %}
+            <tr><td style="color:var(--sub)">{{ loop.index }}</td><td style="font-weight:700">{{ r.item_name }}</td><td>{{ r.qty }}</td><td style="color:var(--orange);font-weight:700">${{ "%.2f"|format(r.rev|float) }}</td></tr>
+            {% else %}
+            <tr><td colspan='4' style='text-align:center;color:var(--sub);padding:24px'>No data yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="card"><div class="card-hdr">📊 Orders by Status</div>
+        {% for r in data.statuses %}
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+          {{ badge(r.status)|safe }}<span style="font-weight:700;font-size:18px">{{ r.cnt }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
