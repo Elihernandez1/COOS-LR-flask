@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Become a Freelancer{% endblock %}
+
+{% block content %}
+<div class="page" style="max-width:640px">
+  <div style="text-align:center;padding:40px 0 28px">
+    <div style="font-size:48px;margin-bottom:12px">💻</div>
+    <h1 style="font-size:28px;font-weight:700;color:var(--navy);margin-bottom:8px">Become a COOS-LR Freelancer</h1>
+    <p style="color:var(--sub);font-size:15px;max-width:480px;margin:0 auto">Deploy, configure, and manage COOS-LR systems for local restaurant clients.</p>
+  </div>
+  <div class="card">
+    <div class="card-hdr">Freelancer Application</div>
+    <form method="POST">
+      <div class="grid2">
+        <div class="fg"><label class="lbl">Full Name *</label><input type="text" name="full_name" class="inp" required placeholder="Your full name"/></div>
+        <div class="fg"><label class="lbl">Email Address *</label><input type="email" name="email" class="inp" required placeholder="you@email.com"/></div>
+      </div>
+      <div class="fg"><label class="lbl">Phone Number *</label><input type="tel" name="phone" class="inp" required placeholder="(212) 555-0000"/></div>
+      <div class="fg"><label class="lbl">Relevant Experience *</label>
+        <textarea name="experience" class="inp" rows="4" required placeholder="Python, Flask, database design, previous deployments…"></textarea></div>
+      <div class="fg"><label class="lbl">Portfolio / LinkedIn <span style="font-weight:400;color:var(--sub)">(optional)</span></label>
+        <input type="text" name="portfolio" class="inp" placeholder="https://linkedin.com/in/yourname"/></div>
+      <button type="submit" class="btn btn-o btn-w">Submit Application →</button>
+    </form>
+  </div>
+  <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--sub)">
+    Already approved? <a href="/login">Sign in here</a> &nbsp;|&nbsp; <a href="/" style="color:var(--sub)">← Back to home</a>
+  </p>
+</div>
+{% endblock %}

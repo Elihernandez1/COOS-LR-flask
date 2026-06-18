@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% set hide_navbar = true %}
+{% block title %}Order Confirmed{% endblock %}
+
+{% block content %}
+<nav class="nav"><a class="nav-brand" href="/">COOS<span>-LR</span></a>
+  <div class="nav-links"><a href="/order/{{ tenant.subdomain }}" style="color:var(--lsky)">Order More</a></div>
+</nav>
+<div class="page">
+  <div class="grid2" style="align-items:start">
+    <div class="card" style="text-align:center">
+      <div style="width:80px;height:80px;border-radius:50%;background:var(--teal);color:#fff;font-size:36px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">✓</div>
+      <h2 style="font-size:22px;font-weight:700;color:var(--teal);margin-bottom:4px">Order Confirmed!</h2>
+      <p style="color:var(--sub);font-size:14px;margin-bottom:20px">Your order has been received.</p>
+      <div style="text-align:left">
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px"><span style="color:var(--sub)">Order ID</span><span style="font-weight:700">#ORD-{{ order.order_id }}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px"><span style="color:var(--sub)">Restaurant</span><span style="font-weight:700">{{ tenant.name }}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px"><span style="color:var(--sub)">Address</span><span style="font-weight:700">{{ order.delivery_address }}</span></div>
+        
+        {% for i in items %}
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px">
+          <span>{{ i.item_name }} × {{ i.quantity }}</span><span>${{ "%.2f"|format(i.subtotal) }}</span>
+        </div>
+        {% endfor %}
+        <div style="display:flex;justify-content:space-between;padding:14px 0 0;font-size:20px;font-weight:700"><span>Total</span><span style="color:var(--orange)">${{ "%.2f"|format(order.total_amount) }}</span></div>
+      </div>
+      <a href="/order/{{ tenant.subdomain }}/track/{{ order.order_id }}" class="btn btn-t btn-w" style="margin-top:20px">Track My Order →</a>
+    </div>
+    <div class="card">
+      <div class="card-hdr">📍 Track Order #ORD-{{ order.order_id }}</div>
+      {{ render_stepper(order.status)|safe }}
+      <div style="padding:12px;background:#f0faf8;border-radius:8px;text-align:center;font-size:13px;color:var(--teal);font-weight:700;margin-top:8px">Estimated delivery: 25–35 minutes</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

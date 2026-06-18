@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Onboard Restaurant{% endblock %}
+
+{% block content %}
+<div class="page" style="max-width:540px">
+  <a href="/admin" style="font-size:13px;color:var(--sub)">← Back to Dashboard</a>
+  <h2 style="font-size:22px;font-weight:700;margin:16px 0 6px">Onboard New Restaurant</h2>
+  <div class="card" style="margin-top:16px">
+    <form method="POST">
+      <div class="fg"><label class="lbl">Restaurant Name *</label><input type="text" name="name" class="inp" required placeholder="Luigi's Pizzeria"/></div>
+      <div class="fg"><label class="lbl">Subdomain *</label>
+        <div style="display:flex;align-items:stretch">
+          <input type="text" name="subdomain" class="inp" required placeholder="pizzeria-luigi" style="border-radius:7px 0 0 7px;border-right:none"/>
+          <span style="background:#f0f2f5;border:1.5px solid var(--border);border-left:none;padding:10px 14px;font-size:13px;color:var(--sub);border-radius:0 7px 7px 0;white-space:nowrap;display:flex;align-items:center">.coos-lr.com</span>
+        </div>
+      </div>
+      <div class="fg"><label class="lbl">Owner Name *</label><input type="text" name="owner" class="inp" required placeholder="Luigi Hernandez"/></div>
+      <div class="grid2">
+        <div class="fg"><label class="lbl">Phone</label><input type="tel" name="phone" class="inp" placeholder="(212) 555-0149"/></div>
+        <div class="fg"><label class="lbl">Address</label><input type="text" name="address" class="inp" placeholder="88 Broadway Ave, NY"/></div>
+      </div>
+      <button type="submit" class="btn btn-o btn-w" style="margin-top:6px">Create Restaurant →</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

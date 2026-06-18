@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Restaurant Applications{% endblock %}
+
+{% block content %}
+<div class="page">
+  <a href="/admin" style="font-size:13px;color:var(--sub)">← Back to Dashboard</a>
+  <h2 style="font-size:22px;font-weight:700;margin:16px 0 6px">Restaurant Applications</h2>
+  <p style="color:var(--sub);font-size:13px;margin-bottom:22px">Approving will onboard the business as a new tenant.</p>
+  
+  {% if not apps %}
+  <div class='card' style='text-align:center;padding:48px;color:var(--sub)'>No applications yet.</div>
+  {% else %}
+  <div class="card" style="padding:0;overflow:hidden">
+    <table class="tbl">
+      <thead><tr><th>Business</th><th>Owner</th><th>Subdomain</th><th>Phone</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+      <tbody>
+        {% for a in apps %}
+        {% set sc = "var(--amber)" if a.status == "Pending" else ("var(--teal)" if a.status == "Approved" else "#dc3545") %}
+        <tr>
+          <td style="font-weight:700">{{ a.biz_name }}</td>
+          <td>{{ a.owner_name }}<br><small style="color:var(--sub)">{{ a.email }}</small></td>
+          <td style="font-family:monospace;font-size:13px;color:var(--sub)">{{ a.subdomain_req }}.coos-lr.com</td>
+          <td>{{ a.phone }}</td>
+          <td><span class="bdg" style="background:{{ sc }};color:#fff">{{ a.status }}</span></td>
+          <td style="font-size:12px;color:var(--sub)">{{ a.submitted_at.strftime('%y-%m-%d %H:%M') }}</td>
+          <td>
+            <div style="display:flex;gap:6px">
+              <form method="POST" action="/admin/applications/restaurant/{{ a.app_id }}/approve" style="display:inline"><button class="btn btn-sm btn-t">Approve</button></form>
+              <form method="POST" action="/admin/applications/restaurant/{{ a.app_id }}/decline" style="display:inline"><button class="btn btn-sm btn-d">Decline</button></form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

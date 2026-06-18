@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% set hide_navbar = true %}
+{% block title %}{% if item %}Edit Item{% else %}Add Item{% endif %}{% endblock %}
+
+{% block content %}
+<div class="wrap">
+  {% include "staff_sidebar.html" %}
+  <div class="content">
+    <a href="/staff/menu" style="font-size:13px;color:var(--sub)">← Back to Menu</a>
+    <h2 style="font-size:22px;font-weight:700;margin:16px 0 6px">{% if item %}Edit: {{ item.name }}{% else %}Add New Item{% endif %}</h2>
+    <div class="card" style="max-width:540px;margin-top:16px">
+      <form method="POST">
+        <div class="fg"><label class="lbl">Item Name *</label><input type="text" name="name" class="inp" required value="{{ item.name if item else '' }}" placeholder="e.g. Margherita"/></div>
+        <div class="fg"><label class="lbl">Description</label><textarea name="desc" class="inp" rows="2" placeholder="Fresh ingredients…">{{ item.description if item else '' }}</textarea></div>
+        <div class="grid2">
+          <div class="fg"><label class="lbl">Price ($) *</label><input type="number" name="price" step="0.01" min="0" class="inp" required value="{{ item.price if item else '' }}" placeholder="12.99"/></div>
+          <div class="fg"><label class="lbl">Category *</label>
+            <select name="cat" class="inp">
+              {% for c in ["Pizza","Pasta","Salads","Appetizers","Desserts","Drinks","Nigiri","Rolls","Soups","General","Espresso","Cold Drinks","Hot Drinks","Pastries","Food"] %}
+              <option {% if item and item.category == c %}selected{% endif %}>{{ c }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label class="lbl">Badge <span style="font-weight:400;color:var(--sub)">(optional)</span></label>
+          <select name="badge" class="inp">
+            <option value="">None</option>
+            {% for b in ["POPULAR","NEW","CHEF","HOT"] %}
+            <option {% if item and item.badge == b %}selected{% endif %}>{{ b }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-o btn-w" style="margin-top:6px">{% if item %}Save Changes{% else %}Add to Menu{% endif %}</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

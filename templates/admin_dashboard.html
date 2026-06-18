@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;flex-wrap:wrap;gap:10px">
+    <div><h2 style="font-size:24px;font-weight:700">Admin Dashboard</h2>
+    <p style="color:var(--sub);font-size:13px;margin-top:4px">Platform-wide overview — all tenants</p></div>
+    <a href="/admin/onboard" class="btn btn-o">+ Onboard Restaurant</a>
+  </div>
+  
+  <div class="stats" style="grid-template-columns:repeat(4,1fr)">
+    <div class="stat"><div class="stat-n">{{ tenants|length }}</div><div class="stat-l">Total Tenants</div></div>
+    <div class="stat" style="border-left-color:var(--teal)"><div class="stat-n" style="color:var(--teal)">{{ tot_ord }}</div><div class="stat-l">Total Orders</div></div>
+    <div class="stat" style="border-left-color:var(--steel)"><div class="stat-n" style="color:var(--steel)">${{ "%.0f"|format(tot_rev|float) }}</div><div class="stat-l">Platform Revenue</div></div>
+    <div class="stat" style="border-left-color:var(--amber)"><div class="stat-n" style="color:var(--amber)">{{ tot_usr }}</div><div class="stat-l">Staff Users</div></div>
+  </div>
+  
+  <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px">
+    <div style="padding:14px 20px;background:var(--navy)"><span style="font-size:15px;font-weight:700;color:#fff">All Restaurant Clients</span></div>
+    <table class="tbl">
+      <thead><tr><th>Restaurant</th><th>Subdomain</th><th>Owner</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for t in tenants %}
+        <tr>
+          <td style="font-weight:700">{{ t.name }}</td>
+          <td style="font-family:monospace;color:var(--sub);font-size:13px">{{ t.subdomain }}.coos-lr.com</td>
+          <td>{{ t.owner_name }}</td>
+          <td>
+            {% if t.is_active %}<span class="bdg bdg-Active">Active</span>
+            {% else %}<span class="bdg bdg-Inactive">Inactive</span>{% endif %}
+          </td>
+          <td>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <a href="/order/{{ t.subdomain }}" class="btn btn-sm btn-o" target="_blank">View Site</a>
+              <a href="/admin/branding/{{ t.tenant_id }}" class="btn btn-sm btn-s">Branding</a>
+              <form method="POST" action="/admin/tenant/{{ t.tenant_id }}/toggle" style="display:inline">
+                <button class="btn btn-sm {% if t.is_active %}btn-d{% else %}btn-t{% endif %}">
+                  {% if t.is_active %}Deactivate{% else %}Activate{% endif %}
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="grid2">
+    <a href="/admin/users" class="btn btn-n" style="text-align:center;padding:14px;font-size:15px">👥 User Management</a>
+    <a href="/admin/analytics" class="btn btn-n" style="text-align:center;padding:14px;font-size:15px">📊 Platform Analytics</a>
+  </div>
+  <div class="grid2" style="margin-top:14px">
+    <a href="/admin/applications/restaurant" class="btn btn-s" style="text-align:center;padding:14px;font-size:15px">🍽️ Restaurant Applications</a>
+    <a href="/admin/applications/freelancer" class="btn btn-s" style="text-align:center;padding:14px;font-size:15px">💻 Freelancer Applications</a>
+  </div>
+</div>
+{% endblock %}

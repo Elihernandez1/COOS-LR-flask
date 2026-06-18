@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Branding Config{% endblock %}
+
+{% block content %}
+<div class="page" style="max-width:540px">
+  <a href="/admin" style="font-size:13px;color:var(--sub)">← Back to Dashboard</a>
+  <h2 style="font-size:22px;font-weight:700;margin:16px 0 4px">Branding — {{ tenant.name }}</h2>
+  <div id="prev" style="background:{{ br.primary_color }};padding:12px 20px;border-radius:8px;margin:16px 0;display:flex;align-items:center;gap:14px">
+    <div id="prev-logo" style="width:42px;height:42px;border-radius:50%;background:{{ br.secondary_color }};color:#fff;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center">{{ br.logo_text }}</div>
+    <span style="color:#fff;font-weight:700;font-size:16px">{{ tenant.name }}</span>
+  </div>
+  <div class="card">
+    <form method="POST">
+      <div class="fg"><label class="lbl">Primary Color</label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <input type="color" name="pc" value="{{ br.primary_color }}" id="pc" style="width:48px;height:38px;border:1px solid var(--border);border-radius:6px;cursor:pointer" oninput="document.getElementById('prev').style.background=this.value"/>
+          <input type="text" value="{{ br.primary_color }}" class="inp" style="width:120px" oninput="document.getElementById('pc').value=this.value;document.getElementById('prev').style.background=this.value"/>
+        </div>
+      </div>
+      <div class="fg"><label class="lbl">Secondary Color</label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <input type="color" name="sc" value="{{ br.secondary_color }}" id="sc" style="width:48px;height:38px;border:1px solid var(--border);border-radius:6px;cursor:pointer" oninput="document.getElementById('prev-logo').style.background=this.value"/>
+          <input type="text" value="{{ br.secondary_color }}" class="inp" style="width:120px" oninput="document.getElementById('sc').value=this.value;document.getElementById('prev-logo').style.background=this.value"/>
+        </div>
+      </div>
+      <div class="fg"><label class="lbl">Logo Text (2–3 chars)</label>
+        <input type="text" name="lt" maxlength="4" class="inp" value="{{ br.logo_text }}" oninput="document.getElementById('prev-logo').textContent=this.value"/>
+      </div>
+      <button type="submit" class="btn btn-o btn-w" style="margin-top:6px">Save Branding →</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

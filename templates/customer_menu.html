@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}{{ tenant.name }} Menu{% endblock %}
+
+{% set hide_navbar = true %}
+
+{% block content %}
+<nav class="nav" style="background:var(--navy)">
+  <div style="display:flex;align-items:center;gap:12px">
+    <div style="width:38px;height:38px;border-radius:50%;background:{{ br.primary_color }};color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center">
+      {{ br.logo_text }}
+    </div>
+    <span style="font-size:18px;font-weight:700;color:#fff">{{ tenant.name }}</span>
+  </div>
+  <div class="nav-links">
+    <a href="/" style="color:var(--lsky);font-size:13px">← Home</a>
+    <a href="/order/{{ tenant.subdomain }}/cart" class="nav-btn" style="background:{{ br.primary_color }}">🛒 Cart ({{ cnt }})</a>
+  </div>
+</nav>
+
+<div style="background:#1a2b3c;padding:5px 28px;font-size:11px;color:#7a90a8;font-family:monospace">
+  {{ tenant.subdomain }}.coos-lr.com/menu
+</div>
+
+<div style="background:#fff;border-bottom:1px solid var(--border);padding:10px 28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+  <a href="/order/{{ tenant.subdomain }}?cat=All" class="btn btn-sm {% if cat == 'All' %}btn-o{% else %}btn-out{% endif %}">All</a> 
+  
+  {% for c in cats %}
+    <a href="/order/{{ tenant.subdomain }}?cat={{ c.category }}" class="btn btn-sm {% if cat == c.category %}btn-o{% else %}btn-out{% endif %}">
+      {{ c.category }}
+    </a> 
+  {% endfor %}
+
+  <form method="GET" style="margin-left:auto;display:flex;gap:6px">
+    <input type="hidden" name="cat" value="{{ cat }}"/>
+    <input type="text" name="q" class="inp" style="width:180px;padding:6px 12px;font-size:13px" placeholder="Search…" value="{{ q }}"/>
+    <button class="btn btn-sm btn-s" type="submit">🔍</button>
+  </form>
+</div>
+
+<div class="page">
+  {% if items %}
+  <div class="grid3">
+    {% for i in items %}
+    <div class="card" style="padding:0;overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:150px;background:linear-gradient(135deg,#1e3a55,#2d5a7e);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0">
+        <span style="font-size:48px">{{ food_icon }}</span>
+        {% if i.badge %}
+          <span class="bdg bdg-{{ i.badge }}" style="position:absolute;top:10px;left:10px;font-size:10px">{{ i.badge }}</span>
+        {% endif %}
+      </div>
+      <div style="padding:16px;flex:1;display:flex;flex-direction:column;gap:6px">
+        <h3 style="font-size:15px;font-weight:700">{{ i.name }}</h3>
+        <p style="font-size:12px;color:var(--sub);flex:1">{{ i.description }}</p>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+          <span style="font-size:19px;font-weight:700;color:{{ br.primary_color }}">${{ "%.2f"|format(i.price) }}</span>
+          
+          <form method="POST" action="/order/{{ tenant.subdomain }}/add">
+            <input type="hidden" name="iid" value="{{ i.item_id }}"/>
+            <input type="hidden" name="name" value="{{ i.name }}"/>
+            <input type="hidden" name="price" value="{{ i.price }}"/>
+            <input type="hidden" name="cat" value="{{ cat }}"/>
+            <button type="submit" class="btn btn-sm" style="background:{{ br.primary_color }};color:#fff">+ Add</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="card" style="text-align:center;padding:48px;color:var(--sub)">
+    No items found in this category.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

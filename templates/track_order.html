@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% set hide_navbar = true %}
+{% block title %}Track Order #ORD-{{ order.order_id }}{% endblock %}
+
+{% block content %}
+<nav class="nav"><a class="nav-brand" href="/">COOS<span>-LR</span></a>
+  <div class="nav-links"><a href="/order/{{ tenant.subdomain }}" style="color:var(--lsky)">← Order More</a></div>
+</nav>
+<div class="page" style="max-width:580px">
+  <h2 style="font-size:22px;font-weight:700;margin-bottom:4px">Track Order #ORD-{{ order.order_id }}</h2>
+  <p style="color:var(--sub);font-size:13px;margin-bottom:20px">{{ tenant.name }}</p>
+  <div class="card">
+    <div style="text-align:center;margin-bottom:20px">
+      <span id="sbdg" class="bdg bdg-{{ order.status|replace('-','') }}" style="font-size:15px;padding:8px 22px">{{ order.status }}</span>
+    </div>
+    {{ render_stepper(order.status)|safe }}
+    <div style="padding:12px;background:#f0faf8;border-radius:8px;text-align:center;font-size:13px;color:var(--teal);font-weight:700;margin-top:8px">Estimated delivery: 25–35 minutes</div>
+  </div>
+</div>
+<script>
+setInterval(async()=>{
+  try{
+    const r=await fetch('/api/order/{{ order.order_id }}');
+    const d=await r.json();
+    const b=document.getElementById('sbdg');
+    if(b&&d.status){
+        b.textContent=d.status;
+        b.className='bdg bdg-'+d.status.replace('-','');
+        window.location.reload(); // Reload to update the stepper progress
+    }
+  }catch(e){}
+},10000);
+</script>
+{% endblock %}

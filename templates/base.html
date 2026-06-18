@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>{% block title %}COOS-LR{% endblock %} — COOS-LR</title>
+    
+    <style>
+        :root{
+          --navy:#0B1E35; --mid-navy:#132944; --orange:#E8751A; --teal:#0E9F8E;
+          --sky:#4DA6D9;  --lsky:#A8D4F0;    --green:#1A8C5A;  --steel:#1D6FAB;
+          --amber:#C47A0A; --white:#FFFFFF;
+          --bg:#F4F6F8; --text:#2C3E50; --sub:#6B7C8D; --border:#DEE4EA;
+        }
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:Calibri,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+        a{color:var(--orange);text-decoration:none} a:hover{text-decoration:underline}
+        main{flex:1}
+        .nav{background:var(--navy);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.4)}
+        .nav-brand{font-size:20px;font-weight:700;color:#fff} .nav-brand span{color:var(--orange)}
+        .nav-links{display:flex;align-items:center;gap:20px}
+        .nav-links a{color:var(--lsky);font-size:14px} .nav-links a.on,.nav-links a:hover{color:#fff;text-decoration:none}
+        .nav-btn{background:var(--orange);color:#fff!important;padding:7px 18px;border-radius:20px;font-weight:700;font-size:13px}
+        .nav-btn:hover{background:#cf640f;text-decoration:none!important}
+        .nav-btn.out{background:transparent;border:2px solid rgba(255,255,255,.35);color:var(--lsky)!important}
+        .flash-wrap{padding:0 28px;margin-top:10px}
+        .flash{padding:11px 16px;border-radius:7px;margin-bottom:8px;font-size:14px;font-weight:600}
+        .flash-success{background:#d4edda;color:#155724;border:1px solid #c3e6cb}
+        .flash-warning{background:#fff3cd;color:#856404;border:1px solid #ffeeba}
+        .flash-danger{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb}
+        .page{padding:28px;max-width:1280px;margin:0 auto;width:100%}
+        .card{background:#fff;border-radius:10px;border:1px solid var(--border);padding:24px;box-shadow:0 1px 5px rgba(0,0,0,.06)}
+        .card-hdr{font-size:15px;font-weight:700;padding-bottom:12px;margin-bottom:16px;border-bottom:1px solid var(--border)}
+        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+        .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+        .btn{display:inline-block;padding:9px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;text-align:center;transition:filter .15s}
+        .btn:hover{filter:brightness(1.08);text-decoration:none} .btn:active{filter:brightness(.95)}
+        .btn-o{background:var(--orange);color:#fff} .btn-t{background:var(--teal);color:#fff}
+        .btn-s{background:var(--steel);color:#fff}  .btn-n{background:var(--navy);color:#fff}
+        .btn-d{background:#dc3545;color:#fff}
+        .btn-out{background:transparent;border:2px solid var(--border);color:var(--sub)}
+        .btn-out:hover{border-color:var(--orange);color:var(--orange)}
+        .btn-sm{padding:5px 13px;font-size:12px;border-radius:6px}
+        .btn-w{width:100%;display:block;padding:12px;font-size:15px}
+        .bdg{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700}
+        .bdg-Received{background:var(--steel);color:#fff}  .bdg-InProgress{background:var(--orange);color:#fff}
+        .bdg-Ready{background:var(--teal);color:#fff}       .bdg-Completed{background:var(--green);color:#fff}
+        .bdg-Cancelled{background:#6c757d;color:#fff}        .bdg-POPULAR{background:var(--orange);color:#fff}
+        .bdg-NEW{background:var(--teal);color:#fff}          .bdg-CHEF{background:var(--amber);color:#fff}
+        .bdg-HOT{background:#e74c3c;color:#fff}              .bdg-Active{background:var(--teal);color:#fff}
+        .bdg-Inactive{background:#6c757d;color:#fff}
+        .fg{margin-bottom:18px}
+        .lbl{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+        .inp{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:7px;font-size:14px;font-family:inherit;color:var(--text);background:#fff;transition:border-color .2s}
+        .inp:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(232,117,26,.15)}
+        .tbl{width:100%;border-collapse:collapse;font-size:14px}
+        .tbl th{text-align:left;padding:11px 16px;background:var(--navy);color:#fff;font-size:13px;font-weight:700}
+        .tbl td{padding:11px 16px;border-bottom:1px solid var(--border)}
+        .tbl tr:last-child td{border-bottom:none} .tbl tr:hover td{background:#f8f9fb}
+        .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+        .stat{background:#fff;border-radius:10px;padding:20px;border-left:5px solid var(--orange);text-align:center;box-shadow:0 1px 5px rgba(0,0,0,.06)}
+        .stat-n{font-size:38px;font-weight:700;color:var(--orange);line-height:1}
+        .stat-l{font-size:13px;color:var(--sub);margin-top:6px}
+        .wrap{display:flex;min-height:calc(100vh - 54px)}
+        .sidebar{width:210px;background:var(--navy);display:flex;flex-direction:column;flex-shrink:0}
+        .sb-logo{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,.08)}
+        .sb-name{font-weight:700;color:#fff;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .sb-role{font-size:11px;color:var(--lsky);margin-top:2px}
+        .sb-nav{padding:10px 0;flex:1}
+        .sb-nav a{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:13px;color:var(--lsky);text-decoration:none;border-left:3px solid transparent;transition:background .15s}
+        .sb-nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+        .sb-nav a.on{background:var(--steel);color:#fff;border-left-color:var(--orange)}
+        .sb-cnt{margin-left:auto;background:var(--orange);color:#fff;border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700}
+        .sb-foot{padding:14px 16px;border-top:1px solid rgba(255,255,255,.08)}
+        .sb-foot a{color:var(--sub);font-size:12px}
+        .content{flex:1;padding:28px;overflow-y:auto}
+        .step{display:flex;gap:16px;margin-bottom:0}
+        .step-ic-wrap{display:flex;flex-direction:column;align-items:center}
+        .step-ic{width:38px;height:38px;border-radius:50%;background:var(--border);color:var(--sub);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .step-ic.done{background:var(--teal);color:#fff} .step-ic.cur{background:var(--orange);color:#fff}
+        .step-line{width:2px;height:26px;background:var(--border);margin:3px 0}
+        .step-line.done{background:var(--teal)}
+        .step-body{padding:6px 0 20px}
+        .step-lbl{font-weight:700;font-size:14px;color:var(--sub)} .step-lbl.on{color:var(--text)}
+        .step-det{font-size:12px;color:var(--sub);margin-top:2px}
+        footer{background:var(--navy);color:var(--lsky);text-align:center;padding:14px;font-size:12px}
+        @media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr}.page{padding:16px}.wrap{flex-direction:column}.sidebar{width:100%}}
+    </style>
+</head>
+<body>
+
+    {% if not hide_navbar %}
+    <nav class="nav">
+        <a class="nav-brand" href="/">COOS<span>-LR</span></a>
+        <div class="nav-links">
+            {% if session.get('role') == 'staff' %}
+                <a href="/staff">📋 Orders</a>
+                <a href="/staff/history">🕐 History</a>
+                <a href="/staff/menu">🍕 Menu</a>
+                <a href="/staff/analytics">📊 Analytics</a>
+                <span style="color:var(--sub);font-size:13px">{{ session.get('full_name', '') }}</span>
+                <a href="/logout" class="nav-btn out">Log Out</a>
+            {% elif session.get('role') == 'admin' %}
+                <a href="/admin">Dashboard</a>
+                <a href="/admin/users">Users</a>
+                <a href="/admin/analytics">Analytics</a>
+                <span style="color:var(--sub);font-size:13px">{{ session.get('full_name', '') }}</span>
+                <a href="/logout" class="nav-btn out">Log Out</a>
+            {% else %}
+                <a href="/login" class="nav-btn">Staff / Admin Login</a>
+            {% endif %}
+        </div>
+    </nav>
+    {% endif %}
+
+    <div class="flash-wrap">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </div>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>COOS-LR &nbsp;·&nbsp; Monroe University &nbsp;·&nbsp; OOP Edition</footer>
+</body>
+</html>

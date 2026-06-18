@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div style="background:linear-gradient(135deg,var(--navy),var(--mid-navy));padding:64px 28px;text-align:center">
+  <h1 style="color:#fff;font-size:42px;font-weight:700;margin-bottom:10px">
+    Order Online from Your <span style="color:var(--orange)">Favorite Restaurant</span>
+  </h1>
+  <p style="color:var(--lsky);font-size:18px">Fresh food delivered — powered by COOS-LR</p>
+</div>
+
+<div class="page">
+  <h2 style="font-size:22px;font-weight:700;margin-bottom:6px">🍽️ Available Restaurants</h2>
+  <p style="color:var(--sub);font-size:13px;margin-bottom:22px">Choose a restaurant to view their menu and place an order.</p>
+  
+  <div class="grid3">
+    {% for t in tenants %}
+    <div class="card" style="text-align:center;padding:28px">
+      <div style="width:72px;height:72px;border-radius:50%;background:var(--orange);color:#fff;
+                  font-size:26px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+        {{ t.name[:2].upper() }}
+      </div>
+      <h3 style="font-size:17px;font-weight:700;margin-bottom:6px">{{ t.name }}</h3>
+      <p style="font-size:13px;color:var(--sub);margin-bottom:4px">📍 {{ t.address }}</p>
+      <p style="font-size:12px;color:var(--sub);font-family:monospace;margin-bottom:20px">{{ t.subdomain }}.coos-lr.com</p>
+      <a href="/order/{{ t.subdomain }}" class="btn btn-o btn-w">View Menu & Order →</a>
+    </div>
+    {% else %}
+    <p>No active restaurants found right now.</p>
+    {% endfor %}
+  </div>
+
+  <div style="margin-top:48px;background:var(--mid-navy);border-radius:12px;padding:32px;text-align:center">
+    <h3 style="color:#fff;font-size:18px;margin-bottom:8px">Restaurant Staff or Admin?</h3>
+    <p style="color:var(--lsky);font-size:14px;margin-bottom:22px">Log in to manage orders, menu, branding, and analytics.</p>
+    <a href="/login" class="btn btn-o">Staff / Admin Login →</a>
+  </div>
+</div>
+{% endblock %}
