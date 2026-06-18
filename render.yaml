@@ -1,0 +1,9 @@
+﻿services:
+  - type: web
+    name: coos-lr-flask
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn coos_lr_oopv:app
+    envVars:
+      - key: FLASK_SECRET_KEY
+        generateValue: true
